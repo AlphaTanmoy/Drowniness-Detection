@@ -97,6 +97,10 @@ def run_cmd():
         else:
             messagebox.showinfo("Access Granted", "API validation succeeded. Application will start.")
             
+        try:
+            os.remove(SAVED_KEY_FILE)
+        except Exception as del_err:
+            print(f"Warning: Could not delete {SAVED_KEY_FILE}: {del_err}")
         #run.main()
 
     except Exception as e:
