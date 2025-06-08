@@ -111,28 +111,7 @@ const Users = () => {
     }
   };
 
-  // Toggle verification status
-  const handleToggleVerify = async (userId, currentStatus) => {
-    try {
-      // Optimistic update
-      setUsers(users.map(user => 
-        user.id === userId ? { ...user, verified: !currentStatus } : user
-      ));
-
-      // API call to update verification status
-      await axios.post('http://localhost:8080/verify', {
-        userId: userId,
-        adminId: authToken,
-        verifyStatus: !currentStatus
-      });
-
-    } catch (err) {
-      // Revert on error
-      setUsers(users);
-      const errorMessage = err.response?.data?.message || 'Failed to update user verification status';
-      setError(errorMessage);
-    }
-  };
+  // Note: handleToggleVerify has been removed as it's no longer used
 
   if (loading) {
     return (
