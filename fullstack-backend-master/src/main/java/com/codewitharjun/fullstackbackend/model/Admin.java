@@ -20,4 +20,6 @@ public class Admin {
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
     private ZonedDateTime createdDate = ZonedDateTime.now();
+    private String otp;
+    private ZonedDateTime otpSendTimeStamp = ZonedDateTime.now();
 }
