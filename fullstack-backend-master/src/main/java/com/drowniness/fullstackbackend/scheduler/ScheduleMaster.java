@@ -50,7 +50,8 @@ public class ScheduleMaster {
             emailService.subscriptionExpired(
                     user.getEmail(),
                     user.getFullName(),
-                    user.getProductKey()
+                    user.getProductKey(),
+                    false
             );
         }
         userRepository.saveAll(expiredUsers);

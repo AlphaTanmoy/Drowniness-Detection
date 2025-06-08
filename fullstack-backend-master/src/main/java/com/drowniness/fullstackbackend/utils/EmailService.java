@@ -73,7 +73,7 @@ public class EmailService {
             context.setVariable("macAddress",mac);
             context.setVariable("expiredOn", expiredOn);
 
-            String htmlContent = templateEngine.process("user-invoice", context);
+            String htmlContent = templateEngine.process("mac-assign-confirmation", context);
 
             helper.setTo(to);
             helper.setSubject("Purchase Confirm");
@@ -112,7 +112,7 @@ public class EmailService {
         }
     }
 
-    public void subscriptionExpired(String to, String fullName, String productKey){
+    public void subscriptionExpired(String to, String fullName, String productKey, Boolean force){
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -121,7 +121,9 @@ public class EmailService {
             context.setVariable("fullName", fullName);
             context.setVariable("email", to);
             context.setVariable("productKey", productKey);
-
+            if(force){
+                context.setVariable("force", "This Action is taken Forcefully By An ADMIN");
+            }
             String htmlContent = templateEngine.process("subscription-expired", context);
 
             helper.setTo(to);

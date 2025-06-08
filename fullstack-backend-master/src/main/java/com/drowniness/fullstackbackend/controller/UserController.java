@@ -89,14 +89,4 @@ public class UserController {
 
         return userService.verifyPurchase(productKey, mac);
     }
-
-    @PostMapping("/verify")
-    String verifyUser(
-            @RequestBody VerifyUserReq verifyUserReq
-    ) {
-        if (verifyUserReq.getAdminId().isEmpty()) throw new UnAuthorizeAccessException("Provide Id to validate");
-        if (verifyAdminAccess.verifyAdmin(verifyUserReq.getAdminId()))
-            throw new UnAuthorizeAccessException("You don't have access!");
-        return userService.verifyUser(verifyUserReq);
-    }
 }

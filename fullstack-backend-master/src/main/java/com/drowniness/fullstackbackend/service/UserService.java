@@ -63,10 +63,24 @@ public class UserService {
         findUser.get().setFullName(updateUser.getFullName());
         findUser.get().setIsVerified(updateUser.getIsVerified());
         findUser.get().setIsMacAssigned(updateUser.getIsMacAssigned());
+        emailService.verifyUser(
+                findUser.get().getEmail(),
+                findUser.get().getFullName(),
+                findUser.get().getIsVerified()
+        );
         return userRepository.save(findUser.get());
     }
 
     public void deleteById(String id) {
+        Optional<User> findUser = userRepository.findById(id);
+        if(findUser.isEmpty()) throw new RuntimeException("No user found");
+
+        emailService.subscriptionExpired(
+                findUser.get().getEmail(),
+                findUser.get().getFullName(),
+                findUser.get().getProductKey(),
+                true
+        );
         userRepository.deleteById(id);
     }
 
@@ -100,23 +114,5 @@ public class UserService {
         return true;
     }
 
-    public String verifyUser(VerifyUserReq verifyUserReq) {
-        Optional<User> findValidUser = userRepository.findById(verifyUserReq.getUserId());
-        if (findValidUser.isEmpty()) throw new RuntimeException("Not a valid User");
-
-        if (findValidUser.get().getIsVerified() == verifyUserReq.getVerifyStaus()) {
-            emailService.verifyUser(
-                    findValidUser.get().getEmail(),
-                    findValidUser.get().getFullName(),
-                    findValidUser.get().getIsVerified()
-            );
-            return "User verified staus is already " + verifyUserReq.getVerifyStaus();
-        } else {
-            findValidUser.get().setIsVerified(verifyUserReq.getVerifyStaus());
-            return "User verified staus changed to " + verifyUserReq.getVerifyStaus();
-        }
-
-
-    }
 }
 
