@@ -25,6 +25,6 @@ public class User {
     private ZonedDateTime createdDate = ZonedDateTime.now();
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
-    private ZonedDateTime expiredOn = ZonedDateTime.now().plusMonths(12);
+    private ZonedDateTime expiredOn;
     private Boolean isExpired = false;
 }

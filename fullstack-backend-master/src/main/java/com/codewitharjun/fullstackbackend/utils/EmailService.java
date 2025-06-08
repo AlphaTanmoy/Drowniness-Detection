@@ -38,4 +38,50 @@ public class EmailService {
             throw new RuntimeException("Failed to send OTP email", e);
         }
     }
+
+    public void customerCreated(String to, String fullName, String productKey) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            Context context = new Context();
+            context.setVariable("fullName", fullName);
+            context.setVariable("email", to);
+            context.setVariable("productKey", productKey);
+
+            String htmlContent = templateEngine.process("user-invoice", context);
+
+            helper.setTo(to);
+            helper.setSubject("Purchase Confirm");
+            helper.setText(htmlContent, true);
+
+            mailSender.send(message);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to send OTP email", e);
+        }
+    }
+
+    public void customerMacAssigned(String to, String fullName, String productKey, String mac, String expiredOn) {
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            Context context = new Context();
+            context.setVariable("fullName", fullName);
+            context.setVariable("email", to);
+            context.setVariable("productKey", productKey);
+            context.setVariable("macAddress",mac);
+            context.setVariable("expiredOn", expiredOn);
+
+            String htmlContent = templateEngine.process("user-invoice", context);
+
+            helper.setTo(to);
+            helper.setSubject("Purchase Confirm");
+            helper.setText(htmlContent, true);
+
+            mailSender.send(message);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to send OTP email", e);
+        }
+    }
 }

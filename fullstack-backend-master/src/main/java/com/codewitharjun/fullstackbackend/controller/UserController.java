@@ -3,6 +3,7 @@ package com.codewitharjun.fullstackbackend.controller;
 import com.codewitharjun.fullstackbackend.exception.UnAuthorizeAccessException;
 import com.codewitharjun.fullstackbackend.exception.UserNotFoundException;
 import com.codewitharjun.fullstackbackend.model.User;
+import com.codewitharjun.fullstackbackend.reqres.UserCreateRequest;
 import com.codewitharjun.fullstackbackend.service.UserService;
 import com.codewitharjun.fullstackbackend.utils.VerifyAdminAccess;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,12 +25,11 @@ public class UserController {
 
     @PostMapping("/user")
     User newUser(
-            @RequestParam String adminId,
-            @RequestBody User newUser
+            @RequestBody UserCreateRequest userCreateRequest
     ) {
-        if (adminId.isEmpty()) throw new UnAuthorizeAccessException("Provide Id to validate");
-        if (verifyAdminAccess.verifyAdmin(adminId)) throw new UnAuthorizeAccessException("You don't have access!");
-        return userService.save(newUser);
+        if (userCreateRequest.getAdminId().isEmpty()) throw new UnAuthorizeAccessException("Provide Id to validate");
+        if (verifyAdminAccess.verifyAdmin(userCreateRequest.getAdminId())) throw new UnAuthorizeAccessException("You don't have access!");
+        return userService.createUser(userCreateRequest.getFullName(), userCreateRequest.getEmail());
     }
 
     @GetMapping("/users")
