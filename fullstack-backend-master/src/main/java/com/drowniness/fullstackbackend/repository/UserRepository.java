@@ -23,7 +23,7 @@ public interface UserRepository extends JpaRepository<User,String> {
 
     @Query(
             value = "SELECT * FROM users " +
-                    "WHERE expired_on > NOW() " +
+                    "WHERE NOW() > expired_on " +
                     "AND is_expired = false"
             , nativeQuery = true
     )

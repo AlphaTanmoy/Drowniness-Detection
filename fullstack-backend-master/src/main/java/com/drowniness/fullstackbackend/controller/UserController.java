@@ -78,12 +78,9 @@ public class UserController {
 
     @GetMapping("/verifyPurchase")
     Boolean verifyPurchase(
-            @PathVariable String adminId,
-            @PathVariable("productKey") String productKey,
-            @PathVariable("mac") String mac
+            @RequestParam("productKey") String productKey,
+            @RequestParam("mac") String mac
     ) {
-        if (adminId.isEmpty()) throw new UnAuthorizeAccessException("Provide Id to validate");
-        if (verifyAdminAccess.verifyAdmin(adminId)) throw new UnAuthorizeAccessException("You don't have access!");
         if (productKey == null) throw new RuntimeException("Provide product key");
         if (mac == null) throw new RuntimeException("Provide MAC Address");
 

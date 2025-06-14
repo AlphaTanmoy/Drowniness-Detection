@@ -32,6 +32,8 @@ public class UserService {
         User newUser = new User();
         newUser.setFullName(fullName);
         newUser.setEmail(email);
+        newUser.setIsExpired(false);
+        newUser.setIsVerified(true);
         userRepository.save(newUser);
         emailService.customerCreated(
                 newUser.getEmail(),
